@@ -1,0 +1,18 @@
+
+Turn 3
+================================================================
+warning: owned entities 2, 0 collided on cell (7, 16) as the result of moves on this turn
+At command 2 of 3:
+    1   m 0 o
+>>> 2   m 2 w
+    3   g
+
+
+Turn 5
+================================================================
+warning: owned entities 6, 4 collided on cell (7, 16) as the result of moves on this turn
+At command 2 of 3:
+    1   m 4 o
+>>> 2   m 6 w
+    3   g
+
