@@ -46,6 +46,10 @@ def get_maxPosition(ship,hlt_map,planned_position, game):
     return desired_position
 
 
+def get_travelCost():
+    print('cost')
+
+
 def scoreMap(game,start,curPoint,radius=5,hlt_map={}):
     gm = game.game_map
     directions = curPoint.get_surrounding_cardinals()
@@ -74,11 +78,11 @@ else:
 hlt_map = scoreMap(game,game.me.shipyard.position,game.me.shipyard.position,r)
 ship_status = {}
 
-# initial_moveCost = 10
-# end_moveCost = 1.2
-# plateau = 125
-# m = (math.log(end_moveCost) - math.log(initial_moveCost))/(constants.MAX_TURNS - plateau)
-# b = initial_moveCost*math.exp(-m)
+initial_moveCost = 10
+end_moveCost = 1.2
+plateau = 125
+m = (math.log(end_moveCost) - math.log(initial_moveCost))/(constants.MAX_TURNS - plateau)
+b = initial_moveCost*math.exp(-m)
 # pre compute needed stuff here before intializing game
 # Respond with your name. 
 game.ready("pyBot")
@@ -92,10 +96,10 @@ while True:
     game_map = game.game_map
 
 
-    # if game.turn_number > plateau:
-    #     y = b*math.exp(m*game.turn_number)
-    # else:
-    #     y = initial_moveCost
+    if game.turn_number > plateau:
+        y = b*math.exp(m*game.turn_number)
+    else:
+        y = initial_moveCost
 
     # A command queue holds all the commands you will run this turn.
     command_queue = []
@@ -111,7 +115,7 @@ while True:
         if ship.id not in ship_status:
             ship_status[ship.id] = "exploring"  
 
-        if (constants.MAX_TURNS - game.turn_number - 18) <= game_map.calculate_distance(ship.position,me.shipyard.position):
+        if (constants.MAX_TURNS - game.turn_number - 15) <= game_map.calculate_distance(ship.position,me.shipyard.position):
             ship_status[ship.id] = "end of game"
         elif ship.halite_amount >= constants.MAX_HALITE *0.70:
             ship_status[ship.id] = "returning"
@@ -133,7 +137,7 @@ while True:
                 move = nav['move']
                 command_queue.append(ship.move(move))
                 planned_position.append(mission[ship.id])
-                if game_map[maxP].halite_amount <= 15:
+                if game_map[maxP].halite_amount <= 4*y:
                     del mission[ship.id]
             logging.info("Ship {} has {} halite and is {} to {} from {} by moving {}.".format(
                 ship.id, ship.halite_amount, ship_status[ship.id], maxP, ship.position, move))

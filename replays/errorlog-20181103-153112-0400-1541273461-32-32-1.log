@@ -1,0 +1,12 @@
+
+Turn 330
+================================================================
+error: failed to decode bot message: "T" (at position 1)
+Last input received was:
+Traceback (most recent call last):
+  File "MyBot2.py", line 109, in <module>
+    ship_map = scoreMap(game,ship.position,ship.position)
+  File "MyBot2.py", line 66, in scoreMap
+    hlt_map[pos] = amount
+UnboundLocalError: local variable 'amount' referenced before assignment
+

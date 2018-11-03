@@ -250,6 +250,75 @@ class GameMap:
                                       else Direction.invert(y_cardinality))
             return possible_moves
 
+    def aStar_plan(self,source,destination, end_game = False):
+        openset = set()
+        closedset = set()
+        current = (source.x,source.y)
+        goal = (destination.x, destination.y)
+        openset.add(current)
+        movement_cost = {current: 0}
+        hueristic_cost = {current: self.calculate_distance(source,destination)}
+        total_cost = {current: self.calculate_distance(source,destination)}
+        parent = {current: None}
+
+        while openset:
+            min_cost = min(total_cost.values())
+            current = [k for k, v in total_cost.items() if v==min_cost]
+            current = current[0]
+            if current == goal:
+                path = []
+                cost = 0
+                while parent[current]:
+                    cost = movement_cost[current] + cost
+                    path.append(current)
+                    current = parent[current]
+                if not path:
+                    cost = 0
+                    move = (0,0)
+                    return {'move': move, 'cost': cost}
+                path = path[::-1]
+                target_position = Position(path[0][0],path[0][1])
+                direction =  target_position - source
+                direction = self.normalize_direction(direction)
+                move = (direction.x, direction.y)
+                if move == None:
+                    cost = 0
+                    move = (0,0)
+                return {'move': move, 'cost': cost}
+
+            openset.remove(current)
+            del total_cost[current]
+            closedset.add(current)
+            current_position= Position(current[0],current[1])
+            directions = current_position.get_surrounding_cardinals()
+            for d in directions:
+                d= self.normalize(d)
+                if self[d].is_occupied:
+                    if end_game and self[d].has_structure:
+                        pass
+                    else:
+                        if self.calculate_distance(source,d) < 2:
+                            continue
+                node = (d.x,d.y)
+                if node in closedset:
+                    continue
+                if node in openset:
+                    new_g = movement_cost[current] + (1/constants.MOVE_COST_RATIO)*self[current_position].halite_amount
+                    if movement_cost[node] > new_g:
+                        movement_cost[node] = new_g
+                        total_cost[node] = movement_cost[node] + hueristic_cost[node]
+                        parent[node] = current
+                else:
+                    movement_cost[node] = movement_cost[current] + (1/constants.MOVE_COST_RATIO)*self[current_position].halite_amount
+                    hueristic_cost[node] = self.calculate_distance(d,destination)
+                    total_cost[node] = movement_cost[node] + hueristic_cost[node]
+                    parent[node] = current
+                    openset.add(node)
+        cost = 0
+        move = (0,0)
+        return {'move': move, 'cost': cost}
+
+
     def naive_navigate(self, ship, destination):
         """
         Returns a singular safe move towards the destination.
@@ -270,7 +339,7 @@ class GameMap:
 
     def aStar_navigate(self,ship,destination, end_game = False):
         if ship.halite_amount < (1/constants.MOVE_COST_RATIO)*self[ship.position].halite_amount and not self[ship.position].has_structure:
-            return Direction.Still
+            return {'move': (0,0), 'cost': 0}
         openset = set()
         closedset = set()
         current = (ship.position.x,ship.position.y)
@@ -287,11 +356,13 @@ class GameMap:
             current = current[0]
             if current == goal:
                 path = []
+                cost = 0
                 while parent[current]:
+                    cost = movement_cost[current] + cost
                     path.append(current)
                     current = parent[current]
                 if not path:
-                    return Direction.Still
+                    return {'move': (0,0), 'cost': 0}
                 path = path[::-1]
                 target_position = Position(path[0][0],path[0][1])
                 direction =  target_position - ship.position
@@ -301,7 +372,7 @@ class GameMap:
                 move = (direction.x, direction.y)
                 if move == None:
                     move = self.naive_navigate(ship,destination)
-                return move
+                return {'move': move, 'cost': cost}
 
             openset.remove(current)
             del total_cost[current]
@@ -331,7 +402,9 @@ class GameMap:
                     total_cost[node] = movement_cost[node] + hueristic_cost[node]
                     parent[node] = current
                     openset.add(node)
-        return self.naive_navigate(ship,destination)
+        cost = -999
+        move = self.naive_navigate(ship,destination)
+        return {'move': move, 'cost': cost}
 
 
     @staticmethod
