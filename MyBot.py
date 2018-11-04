@@ -74,11 +74,6 @@ else:
 hlt_map = scoreMap(game,game.me.shipyard.position,game.me.shipyard.position,r)
 ship_status = {}
 
-# initial_moveCost = 10
-# end_moveCost = 1.2
-# plateau = 125
-# m = (math.log(end_moveCost) - math.log(initial_moveCost))/(constants.MAX_TURNS - plateau)
-# b = initial_moveCost*math.exp(-m)
 # pre compute needed stuff here before intializing game
 # Respond with your name. 
 game.ready("pyBot")
@@ -90,12 +85,6 @@ while True:
     # You extract player metadata and the updated map metadata here for convenience.
     me = game.me
     game_map = game.game_map
-
-
-    # if game.turn_number > plateau:
-    #     y = b*math.exp(m*game.turn_number)
-    # else:
-    #     y = initial_moveCost
 
     # A command queue holds all the commands you will run this turn.
     command_queue = []
@@ -111,7 +100,7 @@ while True:
         if ship.id not in ship_status:
             ship_status[ship.id] = "exploring"  
 
-        if (constants.MAX_TURNS - game.turn_number - 18) <= game_map.calculate_distance(ship.position,me.shipyard.position):
+        if (constants.MAX_TURNS - game.turn_number - 16) <= game_map.calculate_distance(ship.position,me.shipyard.position):
             ship_status[ship.id] = "end of game"
         elif ship.halite_amount >= constants.MAX_HALITE *0.70:
             ship_status[ship.id] = "returning"
@@ -121,7 +110,6 @@ while True:
         if ship_status[ship.id] == "exploring":
             if ship.id not in mission:
                 maxP = get_maxPosition(ship,hlt_map,planned_position,game)
-            # if game_map[maxP].halite_amount > y*game_map[ship.position].halite_amount:
                 nav = game_map.aStar_navigate(ship, maxP)
                 move = nav['move']
                 command_queue.append(ship.move(move))
@@ -161,7 +149,6 @@ while True:
             nav = game_map.aStar_navigate(ship, me.shipyard.position,True)
             move = nav['move']
             command_queue.append(ship.move(move))
-            # planned_position.append((ship.position.x,ship.position.y))
             logging.info("Ship {} has {} halite and is {} to {} from {} by moving {}.".format(
                     ship.id, ship.halite_amount, ship_status[ship.id], me.shipyard.position, ship.position, move))
 

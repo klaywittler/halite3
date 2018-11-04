@@ -83,6 +83,10 @@ ship_status = {}
 # Respond with your name. 
 game.ready("pyBot")
 mission = {}
+next_location = {}
+prev_location = {}
+current_location = {}
+
 
 while True:
     # Get the latest game state.
@@ -124,9 +128,19 @@ while True:
             # if game_map[maxP].halite_amount > y*game_map[ship.position].halite_amount:
                 nav = game_map.aStar_navigate(ship, maxP)
                 move = nav['move']
+
+                next_ = ship.position + hlt.Position(move[0],move[1])
+                next_location[ship.id] = (next_.x,next_.y)
+                if game.turn_number > 1:
+                    prev_location[ship.id] = current_location[ship.id]
+                    if prev_location[ship.id] == next_location[ship.id]:
+                        move = (0,0)
+                current_location[ship.id] = (ship.position.x,ship.position.y)
+
                 command_queue.append(ship.move(move))
                 planned_position.append((maxP.x,maxP.y))
-                mission[ship.id] = (maxP.x,maxP.y)
+                mission[ship.id] = (maxP.x,maxP.y)                
+                
             else:
                 maxP = hlt.Position(mission[ship.id][0],mission[ship.id][1])
                 nav = game_map.aStar_navigate(ship, maxP)
