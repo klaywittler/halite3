@@ -39,7 +39,8 @@ def get_maxPosition(ship,hlt_map,planned_position, game):
     for key, position in max_key.items():
         p = hlt.Position(position[0], position[1])
         nav = game.game_map.aStar_plan(ship.position,p)
-        position_cost = nav['cost']/hlt_map[position]
+        home_nav = game.game_map.aStar_plan(p,me.shipyard.position)
+        position_cost = (nav['cost']+home_nav['cost'])/hlt_map[position]
         if position_cost < max_reward:
             max_reward = position_cost
             desired_position = p
@@ -74,11 +75,12 @@ else:
 hlt_map = scoreMap(game,game.me.shipyard.position,game.me.shipyard.position,r)
 ship_status = {}
 
-# initial_moveCost = 10
-# end_moveCost = 1.2
-# plateau = 125
-# m = (math.log(end_moveCost) - math.log(initial_moveCost))/(constants.MAX_TURNS - plateau)
-# b = initial_moveCost*math.exp(-m)
+initial_moveCost = 1
+end_moveCost = 30
+plateau = 0.42*constants.MAX_TURNS
+m = (math.log(end_moveCost) - math.log(initial_moveCost))/(constants.MAX_TURNS - plateau)
+b = initial_moveCost*math.exp(-m)
+
 # pre compute needed stuff here before intializing game
 # Respond with your name. 
 game.ready("pyBot")
@@ -86,6 +88,7 @@ mission = {}
 next_location = {}
 prev_location = {}
 current_location = {}
+built_drop = False
 
 
 while True:
@@ -95,11 +98,14 @@ while True:
     me = game.me
     game_map = game.game_map
 
-
-    # if game.turn_number > plateau:
-    #     y = b*math.exp(m*game.turn_number)
-    # else:
-    #     y = initial_moveCost
+    if game.turn_number > plateau:
+        y = b*math.exp(m*game.turn_number)/4
+        y2 = y/4 - constants.MAX_TURNS/game.turn_number
+        if y2 < initial_moveCost:
+            y2 = initial_moveCost
+    else:
+        y = initial_moveCost
+        y2 = y
 
     # A command queue holds all the commands you will run this turn.
     command_queue = []
@@ -115,23 +121,26 @@ while True:
         if ship.id not in ship_status:
             ship_status[ship.id] = "exploring"  
 
-        if (constants.MAX_TURNS - game.turn_number - 18) <= game_map.calculate_distance(ship.position,me.shipyard.position):
+        if (constants.MAX_TURNS - game.turn_number - 16) <= game_map.calculate_distance(ship.position,me.shipyard.position):
             ship_status[ship.id] = "end of game"
         elif ship.halite_amount >= constants.MAX_HALITE *0.70:
             ship_status[ship.id] = "returning"
             if ship.id in mission:
                 del mission[ship.id]
 
-        if ship_status[ship.id] == "exploring":
+        if (me.halite_amount+ship.halite_amount) > y2*constants.DROPOFF_COST and game_map.calculate_distance(ship.position,me.shipyard.position) >= (4/3)*r and not built_drop:
+                built_drop = True
+                command_queue.append(ship.make_dropoff())
+                logging.info("Ship {} is being turned into a dropoff.".format(ship.id))
+        elif ship_status[ship.id] == "exploring":
             if ship.id not in mission:
                 maxP = get_maxPosition(ship,hlt_map,planned_position,game)
             # if game_map[maxP].halite_amount > y*game_map[ship.position].halite_amount:
-                nav = game_map.aStar_navigate(ship, maxP)
-                move = nav['move']
+                move = game_map.aStar_navigate(ship, maxP)
 
                 next_ = ship.position + hlt.Position(move[0],move[1])
                 next_location[ship.id] = (next_.x,next_.y)
-                if game.turn_number > 1:
+                if game.turn_number > 1 and ship.id in current_location:
                     prev_location[ship.id] = current_location[ship.id]
                     if prev_location[ship.id] == next_location[ship.id]:
                         move = (0,0)
@@ -143,8 +152,7 @@ while True:
                 
             else:
                 maxP = hlt.Position(mission[ship.id][0],mission[ship.id][1])
-                nav = game_map.aStar_navigate(ship, maxP)
-                move = nav['move']
+                move = game_map.aStar_navigate(ship, maxP)
                 command_queue.append(ship.move(move))
                 planned_position.append(mission[ship.id])
                 if game_map[maxP].halite_amount <= 15:
@@ -153,36 +161,66 @@ while True:
                 ship.id, ship.halite_amount, ship_status[ship.id], maxP, ship.position, move))
 
         elif ship_status[ship.id] == "returning":
+            for dropoff in me.get_dropoffs():
+                if ship.position == dropoff.position:
+                    ship_status[ship.id] = "exploring"
+
             if ship.position == me.shipyard.position:
                 ship_status[ship.id] = "exploring"
 
-            # elif me.halite_amount > constants.DROPOFF_COST:
-            #     command_queue.append(ship.make_dropoff())
-            #     logging.info("Ship {} is being turned into a dropoff.".format(ship.id, ship_status[ship.id]))
-
             else:
+                curCost = 10000000
+                for dropoff in me.get_dropoffs():
+                    newDropoff = game_map.aStar_plan(ship.position, dropoff.position)
+                    newCost = newDropoff['cost']
+                    if newCost < curCost:
+                        curCost = newCost
+                        drop = dropoff
+
+                shipyardNav = game_map.aStar_plan(ship.position, me.shipyard.position)
+                shipyardCost = shipyardNav['cost']
+
+                if shipyardCost < curCost:
+                    return_location = me.shipyard
+                else:
+                    return_location = drop
+
                 crash = False
-                if game_map[me.shipyard.position].is_occupied  and game_map[me.shipyard.position].ship.owner != me.id and not shipyard_attack:
+                if game_map[return_location.position].is_occupied  and game_map[return_location.position].ship.owner != me.id and not shipyard_attack:
                     crash = True
                     shipyard_attack = True
-                nav = game_map.aStar_navigate(ship, me.shipyard.position, crash)
-                move = nav['move']
+                move = game_map.aStar_navigate(ship, return_location.position, crash)
                 command_queue.append(ship.move(move))
                 logging.info("Ship {} has {} halite and is {} to {} from {} by moving {}.".format(
-                    ship.id, ship.halite_amount, ship_status[ship.id], me.shipyard.position, ship.position, move))
+                    ship.id, ship.halite_amount, ship_status[ship.id], return_location.position, ship.position, move))
 
         elif ship_status[ship.id] == "end of game":
-            nav = game_map.aStar_navigate(ship, me.shipyard.position,True)
-            move = nav['move']
+            curCost = 10000000
+            for dropoff in me.get_dropoffs():
+                newDropoff = game_map.aStar_plan(ship.position, dropoff.position)
+                newCost = newDropoff['cost']
+                if newCost < curCost:
+                    curCost = newCost
+                    drop = dropoff
+
+            shipyardNav = game_map.aStar_plan(ship.position, me.shipyard.position)
+            shipyardCost = shipyardNav['cost']
+
+            if shipyardCost < curCost:
+                return_location = me.shipyard
+            else:
+                return_location = drop
+
+            move = game_map.aStar_navigate(ship, return_location.position,True)
             command_queue.append(ship.move(move))
             # planned_position.append((ship.position.x,ship.position.y))
             logging.info("Ship {} has {} halite and is {} to {} from {} by moving {}.".format(
-                    ship.id, ship.halite_amount, ship_status[ship.id], me.shipyard.position, ship.position, move))
+                    ship.id, ship.halite_amount, ship_status[ship.id], return_location.position, ship.position, move))
 
 
-    # If you're on the first turn and have enough halite, spawn a ship.
-    # Don't spawn a ship if you currently have a ship at port, though.
-    if game.turn_number <= 0.5*constants.MAX_TURNS and me.halite_amount >= constants.SHIP_COST and not game_map[me.shipyard].is_occupied:
+    # If you're on the first turn and have enough halite, spawn a ship. 10*(len(me.get_dropoffs())+1) >= len(me.get_ships())
+    # Don't spawn a ship if you currently have a ship at port, though. game.turn_number <= 0.5*constants.MAX_TURNS
+    if me.halite_amount >= y*constants.SHIP_COST and not game_map[me.shipyard].is_occupied or len(me.get_ships()) == 0 and me.halite_amount >= constants.SHIP_COST:
         command_queue.append(game.me.shipyard.spawn())
 
     # Send your moves back to the game environment, ending this turn.

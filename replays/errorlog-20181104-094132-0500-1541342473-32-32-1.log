@@ -1,0 +1,88 @@
+
+Turn 383
+================================================================
+warning: owned entities 19, 21 collided on cell (23, 16) as the result of moves on this turn
+At command 2 of 14:
+    1   m 11 e
+>>> 2   m 19 w
+    3   m 17 n
+    4   m 21 s
+
+Other commands that placed an entity on this cell:
+    2   m 19 w
+    3   m 17 n
+>>> 4   m 21 s
+    5   m 26 o
+    6   m 13 s
+
+
+Turn 384
+================================================================
+warning: owned entities 17, 13 collided on cell (23, 16) as the result of moves on this turn
+At command 4 of 12:
+    2   m 1 s
+    3   m 11 e
+>>> 4   m 17 n
+    5   m 13 s
+    6   m 3 s
+
+Other commands that placed an entity on this cell:
+    3   m 11 e
+    4   m 17 n
+>>> 5   m 13 s
+    6   m 3 s
+    7   m 27 o
+
+
+Turn 387
+================================================================
+warning: owned entities 1, 26 collided on cell (23, 16) as the result of moves on this turn
+At command 4 of 10:
+    2   m 5 s
+    3   m 26 o
+>>> 4   m 1 s
+    5   m 11 s
+    6   m 15 s
+
+
+Turn 389
+================================================================
+warning: owned entities 15, 3, 11 collided on cell (23, 16) as the result of moves on this turn
+At command 4 of 8:
+    2   m 11 o
+    3   m 5 s
+>>> 4   m 15 s
+    5   m 3 w
+    6   m 22 s
+
+Other commands that placed an entity on this cell:
+    3   m 5 s
+    4   m 15 s
+>>> 5   m 3 w
+    6   m 22 s
+    7   m 7 s
+
+
+Turn 394
+================================================================
+warning: owned entities 9, 7, 5 collided on cell (23, 16) as the result of moves on this turn
+At command 2 of 5:
+    1   m 5 o
+>>> 2   m 9 s
+    3   m 27 s
+    4   m 7 w
+
+Other commands that placed an entity on this cell:
+    2   m 9 s
+    3   m 27 s
+>>> 4   m 7 w
+    5   m 22 s
+
+
+Turn 398
+================================================================
+warning: owned entities 22, 27 collided on cell (23, 16) as the result of moves on this turn
+At command 2 of 2:
+    1   m 27 o
+>>> 2   m 22 s
+

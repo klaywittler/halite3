@@ -1,0 +1,57 @@
+
+Turn 383
+================================================================
+warning: owned entities 16, 26, 24, 12 collided on cell (8, 16) as the result of moves on this turn
+At command 2 of 11:
+    1   m 23 n
+>>> 2   m 16 w
+    3   m 26 s
+    4   m 17 o
+
+Other commands that placed an entity on this cell:
+    1   m 23 n
+    2   m 16 w
+>>> 3   m 26 s
+    4   m 17 o
+    5   m 2 n
+
+    6   m 25 w
+    7   m 6 n
+>>> 8   m 24 e
+    9   m 4 e
+    10   m 0 n
+
+    9   m 4 e
+    10   m 0 n
+>>> 11   m 12 n
+
+
+Turn 385
+================================================================
+warning: owned entities 0, 2, 25 collided on cell (8, 16) as the result of moves on this turn
+At command 1 of 7:
+>>> 1   m 0 s
+    2   m 23 s
+    3   m 17 w
+
+Other commands that placed an entity on this cell:
+    4   m 4 e
+    5   m 6 n
+>>> 6   m 2 n
+    7   m 25 o
+
+
+Turn 388
+================================================================
+warning: owned entities 23, 6, 17 collided on cell (8, 16) as the result of moves on this turn
+At command 2 of 4:
+    1   m 17 o
+>>> 2   m 23 w
+    3   m 4 n
+    4   m 6 n
+
+Other commands that placed an entity on this cell:
+    2   m 23 w
+    3   m 4 n
+>>> 4   m 6 n
+

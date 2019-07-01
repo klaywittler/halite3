@@ -1,0 +1,103 @@
+
+Turn 383
+================================================================
+warning: owned entities 34, 28, 22 collided on cell (8, 16) as the result of moves on this turn
+At command 4 of 18:
+    2   m 6 w
+    3   m 33 e
+>>> 4   m 34 n
+    5   m 32 e
+    6   m 14 w
+
+Other commands that placed an entity on this cell:
+    11   m 0 n
+    12   m 24 n
+>>> 13   m 28 e
+    14   m 26 n
+    15   m 2 n
+
+
+Turn 385
+================================================================
+warning: owned entities 26, 0 collided on cell (8, 16) as the result of moves on this turn
+At command 3 of 16:
+    1   m 10 w
+    2   m 17 e
+>>> 3   m 26 n
+    4   m 6 s
+    5   m 33 n
+
+Other commands that placed an entity on this cell:
+    10   m 14 s
+    11   m 18 s
+>>> 12   m 0 e
+    13   m 24 n
+    14   m 2 e
+
+
+Turn 390
+================================================================
+warning: owned entities 31, 32, 17, 24 collided on cell (8, 16) as the result of moves on this turn
+At command 4 of 14:
+    2   m 6 e
+    3   m 18 s
+>>> 4   m 31 e
+    5   m 33 s
+    6   m 2 e
+
+Other commands that placed an entity on this cell:
+    5   m 33 s
+    6   m 2 e
+>>> 7   m 32 n
+    8   m 4 e
+    9   m 17 s
+
+    7   m 32 n
+    8   m 4 e
+>>> 9   m 17 s
+    10   m 16 e
+    11   m 10 e
+
+
+Turn 393
+================================================================
+warning: owned entities 8, 16 collided on cell (8, 16) as the result of moves on this turn
+At command 8 of 10:
+    6   m 18 e
+    7   m 4 e
+>>> 8   m 8 e
+    9   m 10 n
+    10   m 33 n
+
+
+Turn 395
+================================================================
+warning: owned entities 12, 18 collided on cell (8, 16) as the result of moves on this turn
+At command 3 of 8:
+    1   m 4 e
+    2   m 2 o
+>>> 3   m 12 e
+    4   m 6 e
+    5   m 10 n
+
+
+Turn 399
+================================================================
+warning: owned entities 2, 33, 6, 10 collided on cell (8, 16) as the result of moves on this turn
+At command 3 of 6:
+    1   m 10 o
+    2   m 4 s
+>>> 3   m 2 e
+    4   m 14 e
+    5   m 33 n
+
+Other commands that placed an entity on this cell:
+    3   m 2 e
+    4   m 14 e
+>>> 5   m 33 n
+    6   m 6 s
+
+    4   m 14 e
+    5   m 33 n
+>>> 6   m 6 s
+

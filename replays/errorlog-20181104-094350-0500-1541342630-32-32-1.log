@@ -1,0 +1,10 @@
+
+Turn 2
+================================================================
+error: failed to decode bot message: "T" (at position 1)
+Last input received was:
+Traceback (most recent call last):
+  File "MyBot2.py", line 129, in <module>
+    if (me.halite_amount+ship.halite_amount) > y2*constants.DROPOFF_COST and game_map.calculate_distance(ship.position,me.shipyard.position) >= (4/3)*r and not built_drop:
+NameError: name 'y2' is not defined
+

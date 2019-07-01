@@ -339,7 +339,7 @@ class GameMap:
 
     def aStar_navigate(self,ship,destination, end_game = False):
         if ship.halite_amount < (1/constants.MOVE_COST_RATIO)*self[ship.position].halite_amount and not self[ship.position].has_structure:
-            return {'move': (0,0), 'cost': 0}
+            return (0,0)
         openset = set()
         closedset = set()
         current = (ship.position.x,ship.position.y)
@@ -362,7 +362,7 @@ class GameMap:
                     path.append(current)
                     current = parent[current]
                 if not path:
-                    return {'move': (0,0), 'cost': 0}
+                    return (0,0)
                 path = path[::-1]
                 target_position = Position(path[0][0],path[0][1])
                 direction =  target_position - ship.position
@@ -372,7 +372,7 @@ class GameMap:
                 move = (direction.x, direction.y)
                 if move == None:
                     move = self.naive_navigate(ship,destination)
-                return {'move': move, 'cost': cost}
+                return move
 
             openset.remove(current)
             del total_cost[current]
@@ -402,9 +402,8 @@ class GameMap:
                     total_cost[node] = movement_cost[node] + hueristic_cost[node]
                     parent[node] = current
                     openset.add(node)
-        cost = -999
         move = self.naive_navigate(ship,destination)
-        return {'move': move, 'cost': cost}
+        return move
 
 
     @staticmethod

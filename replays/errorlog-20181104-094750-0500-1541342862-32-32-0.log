@@ -1,0 +1,9 @@
+
+Turn 386
+================================================================
+warning: owned entities 41, 40 collided on cell (8, 16) as the result of moves on this turn
+At command 2 of 3:
+    1   m 40 o
+>>> 2   m 41 e
+    3   m 23 e
+
