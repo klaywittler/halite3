@@ -1,0 +1,83 @@
+
+Turn 383
+================================================================
+warning: owned entities 23, 20 collided on cell (23, 16) as the result of moves on this turn
+At command 12 of 16:
+    10   m 15 o
+    11   m 13 n
+>>> 12   m 23 s
+    13   m 20 n
+    14   m 1 e
+
+Other commands that placed an entity on this cell:
+    11   m 13 n
+    12   m 23 s
+>>> 13   m 20 n
+    14   m 1 e
+    15   m 25 s
+
+
+Turn 385
+================================================================
+warning: owned entities 21, 7, 19 collided on cell (23, 16) as the result of moves on this turn
+At command 7 of 14:
+    5   m 27 e
+    6   m 13 n
+>>> 7   m 21 s
+    8   m 9 s
+    9   m 15 s
+
+Other commands that placed an entity on this cell:
+    12   m 25 s
+    13   m 29 o
+>>> 14   m 7 w
+
+
+Turn 387
+================================================================
+warning: owned entities 5, 15 collided on cell (23, 16) as the result of moves on this turn
+At command 3 of 11:
+    1   m 13 n
+    2   m 11 s
+>>> 3   m 5 s
+    4   m 15 o
+    5   m 29 s
+
+
+Turn 389
+================================================================
+warning: owned entities 11, 3 collided on cell (23, 16) as the result of moves on this turn
+At command 2 of 9:
+    1   m 13 e
+>>> 2   m 11 e
+    3   m 9 e
+    4   m 29 e
+
+
+Turn 391
+================================================================
+warning: owned entities 30, 29 collided on cell (23, 16) as the result of moves on this turn
+At command 6 of 7:
+    4   m 9 e
+    5   m 29 o
+>>> 6   m 30 s
+    7   m 1 s
+
+
+Turn 395
+================================================================
+warning: owned entities 1, 25 collided on cell (23, 16) as the result of moves on this turn
+At command 5 of 5:
+    3   m 27 s
+    4   m 9 e
+>>> 5   m 1 s
+
+
+Turn 399
+================================================================
+warning: owned entities 9, 27 collided on cell (23, 16) as the result of moves on this turn
+At command 3 of 3:
+    1   m 27 o
+    2   m 13 s
+>>> 3   m 9 s
+

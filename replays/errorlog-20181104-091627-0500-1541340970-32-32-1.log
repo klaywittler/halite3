@@ -1,0 +1,63 @@
+
+Turn 261
+================================================================
+warning: owned entities 7, 13 collided on cell (18, 11) as the result of moves on this turn
+At command 10 of 12:
+    8   m 1 n
+    9   m 16 e
+>>> 10   m 7 s
+    11   m 3 e
+    12   m 9 s
+
+
+Turn 384
+================================================================
+warning: owned entities 1, 28 collided on cell (23, 16) as the result of moves on this turn
+At command 9 of 10:
+    7   m 9 s
+    8   m 31 n
+>>> 9   m 1 w
+    10   m 18 n
+
+
+Turn 387
+================================================================
+warning: owned entities 34, 26 collided on cell (23, 16) as the result of moves on this turn
+At command 3 of 8:
+    1   m 26 o
+    2   m 9 e
+>>> 3   m 34 n
+    4   m 16 n
+    5   m 18 n
+
+
+Turn 388
+================================================================
+warning: owned entities 16, 31 collided on cell (23, 16) as the result of moves on this turn
+At command 4 of 6:
+    2   m 18 n
+    3   m 9 w
+>>> 4   m 16 n
+    5   m 3 w
+    6   m 31 w
+
+Other commands that placed an entity on this cell:
+    4   m 16 n
+    5   m 3 w
+>>> 6   m 31 w
+
+
+Turn 393
+================================================================
+warning: owned entities 9, 3, 18 collided on cell (23, 16) as the result of moves on this turn
+At command 3 of 4:
+    1   m 18 o
+    2   m 5 n
+>>> 3   m 9 n
+    4   m 3 w
+
+Other commands that placed an entity on this cell:
+    2   m 5 n
+    3   m 9 n
+>>> 4   m 3 w
+
